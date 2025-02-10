@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 
-#define LED D5  // LED Pin
+#define LED D5
 
 void blinkMorse(String text);
 void dot();
@@ -12,7 +12,6 @@ struct MorseCode {
   const char* code;
 };
 
-// Morse code mapping
 MorseCode morseTable[] = {
   {'A', ".-"},   {'B', "-..."}, {'C', "-.-."}, {'D', "-.."},  {'E', "."},  
   {'F', "..-."}, {'G', "--."},  {'H', "...."}, {'I', ".."},   {'J', ".---"},
@@ -33,23 +32,23 @@ void setup() {
 
 void loop() {
   if (Serial.available()) {
-    String input = Serial.readStringUntil('\n');  // Read user input
-    input.trim();  // Remove any extra spaces or newlines
+    String input = Serial.readStringUntil('\n');  
+    input.trim();  
 
     Serial.print("Morse Code for '");
     Serial.print(input);
     Serial.println("':");
 
-    blinkMorse(input);  // Convert and blink
+    blinkMorse(input);  
   }
 }
 
 void blinkMorse(String text) {
   for (int i = 0; i < text.length(); i++) {
-    char upperChar = toupper(text[i]);  // Convert to uppercase
+    char upperChar = toupper(text[i]);  
 
     if (upperChar == ' ') {  
-      space();  // Space between words
+      space();  
       continue;
     }
 
@@ -59,7 +58,7 @@ void blinkMorse(String text) {
         Serial.print(" -> ");
         Serial.println(mc.code);
 
-        // Blink LED based on Morse code
+        
         const char* morse = mc.code;
         while (*morse) {
           if (*morse == '.') {
@@ -69,7 +68,7 @@ void blinkMorse(String text) {
           }
           morse++;
         }
-        space();  // Space between letters
+        space();  
         break;
       }
     }
@@ -78,18 +77,18 @@ void blinkMorse(String text) {
 
 void dot() {
   digitalWrite(LED, HIGH);
-  delay(200);  // Short blink
+  delay(200);  
   digitalWrite(LED, LOW);
   delay(200);
 }
 
 void dash() {
   digitalWrite(LED, HIGH);
-  delay(600);  // Long blink
+  delay(600);  
   digitalWrite(LED, LOW);
   delay(200);
 }
 
 void space() {
-  delay(600);  // Space between letters
+  delay(600);  
 }
